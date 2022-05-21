@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+os.add_dll_directory("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.5/bin")
 import sys
 import PIL
 import tensorflow as tf
@@ -78,6 +79,8 @@ model.compile(optimizer='adam',
 
 model.summary()
 
+#model.save("chess_classifier.h5")
+
 checkpoint_path = "training_1/cp.ckpt"
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
@@ -85,13 +88,15 @@ if exec_mode == 'train':
   cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
                                                  save_weights_only=True,
                                                  verbose=1)
-  epochs=1000
+  epochs=100
   history = model.fit(
     train_ds,
     validation_data=val_ds,
     epochs=epochs,
     callbacks=[cp_callback]
   )
+
+  model.save("chess_classifier.h5")
 
 elif exec_mode == 'test':
   latest = tf.train.latest_checkpoint(checkpoint_dir)
@@ -118,3 +123,6 @@ elif exec_mode == 'test':
 
 else:
   print("UNKNOWN: exec_mode="+str(exec_mode))
+
+  #python ChessClassifier.py train
+  #python ChessClassifier.py test
