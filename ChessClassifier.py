@@ -15,7 +15,7 @@ from keras import layers
 from keras.models import Sequential
 
 exec_mode = sys.argv[1] #train|test
-data_dir = pathlib.Path("C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\dataset")
+data_dir = pathlib.Path("C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\test_2")
 image_count = len(list(data_dir.glob('*/*.png')))
 print("|images|="+str(image_count))
 
@@ -96,13 +96,13 @@ if exec_mode == 'train':
     callbacks=[cp_callback]
   )
 
-  model.save("chess_classifier.h5")
+  model.save("chess_classifier_video.h5")
 
 elif exec_mode == 'test':
   latest = tf.train.latest_checkpoint(checkpoint_dir)
   model.load_weights(latest)
  
-  test_data_dir = "C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\test"  
+  test_data_dir = "C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\test_2"  
   pieces = os.listdir(test_data_dir)
   for piece in pieces:
     filePath = test_data_dir+"/"+ piece
