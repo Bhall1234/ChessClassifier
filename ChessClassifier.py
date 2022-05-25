@@ -1,4 +1,7 @@
 # Code extended code from https://www.tensorflow.org/tutorials/images/classification
+# Code from workshop 1 of CMP2020 - 2122, credit to original owner. Some changes made to adapt to the teams project.
+
+import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -11,11 +14,16 @@ import pathlib
 import shutil
 
 from tensorflow import keras
+#from tensorflow import confusion_matrix
 from keras import layers
 from keras.models import Sequential
 
+# Confusion Matrix Storage
+store_probability = [] 
+store_labels = [0,1,2,3,4,5]
+
 exec_mode = sys.argv[1] #train|test
-data_dir = pathlib.Path("C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\test_2")
+data_dir = pathlib.Path("C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\test")
 image_count = len(list(data_dir.glob('*/*.png')))
 print("|images|="+str(image_count))
 
@@ -102,7 +110,7 @@ elif exec_mode == 'test':
   latest = tf.train.latest_checkpoint(checkpoint_dir)
   model.load_weights(latest)
  
-  test_data_dir = "C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\test_2"  
+  test_data_dir = "C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\dataset"  
   pieces = os.listdir(test_data_dir)
   for piece in pieces:
     filePath = test_data_dir+"/"+ piece
@@ -116,10 +124,16 @@ elif exec_mode == 'test':
         img_array = tf.keras.utils.img_to_array(img)
         img_array = tf.expand_dims(img_array, 0)
         predictions = model.predict(img_array)
-        scores = tf.nn.softmax(predictions[0])
+        scores = tf.nn.softmax(predictions[0]) # Softmax activation function
+        #store_probability.append(scores) # store probability for use in confusion matrix
         predicted_class = class_names[np.argmax(scores)]
         print(str(chess_path)+" class="+predicted_class+" prob.="+str(np.max(scores)))
     print("---")
+
+    #print(confusion)
+  #confusion = tf.math.confusion_matrix(labels=store_labels, predictions=scores)
+  #sess = tf.Session()
+  #print(confusion.eval(session=sess))
 
 else:
   print("UNKNOWN: exec_mode="+str(exec_mode))
