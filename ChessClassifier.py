@@ -130,6 +130,26 @@ elif exec_mode == 'test':
         print(str(chess_path)+" class="+predicted_class+" prob.="+str(np.max(scores)))
     print("---")
 
+  #y = [1, 2, 4]
+  #y_ = [2, 2, 4]
+
+  confusion = tf.math.confusion_matrix(labels=store_labels, predictions=scores)
+
+  #confusion = tf.math.confusion_matrix(labels=y_, predictions=y)
+
+  ax = sns.heatmap(confusion, annot = True, cmap="Blues")
+
+  ax.set_title("Seaborn Confusion Matrix with labels\n\n");
+  ax.set_xlabel("\nPredicted Values")
+  ax.set_ylabel("Actual Values ");
+
+  ## Ticket labels - List must be in alphabetical order
+  ax.xaxis.set_ticklabels(["Bishop","King","Knight","Pawn","Queen","Rook"])
+  ax.yaxis.set_ticklabels(["Bishop","King","Knight","Pawn","Queen","Rook"])
+
+    # Display the visualization of the Confusion Matrix.
+  plt.show()
+
     #print(confusion)
   #confusion = tf.math.confusion_matrix(labels=store_labels, predictions=scores)
   #sess = tf.Session()
