@@ -20,10 +20,10 @@ from keras.models import Sequential
 
 # Confusion Matrix Storage
 store_probability = [] 
-store_labels = [0,1,2,3,4,5]
+store_labels = []
 
 exec_mode = sys.argv[1] #train|test
-data_dir = pathlib.Path("C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\test")
+data_dir = pathlib.Path("C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\dataset")
 image_count = len(list(data_dir.glob('*/*.png')))
 print("|images|="+str(image_count))
 
@@ -110,7 +110,7 @@ elif exec_mode == 'test':
   latest = tf.train.latest_checkpoint(checkpoint_dir)
   model.load_weights(latest)
  
-  test_data_dir = "C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\dataset"  
+  test_data_dir = "C:\\Users\\benha\\Documents\\GitHub\\Chess_Classifier\\test_3"  
   pieces = os.listdir(test_data_dir)
   for piece in pieces:
     filePath = test_data_dir+"/"+ piece
@@ -135,6 +135,7 @@ elif exec_mode == 'test':
   #y_ = [2, 2, 4]
 
   print(store_probability)
+  print(store_labels)
   confusion = tf.math.confusion_matrix(labels=store_labels, predictions=store_probability)
 
   #confusion = tf.math.confusion_matrix(labels=y_, predictions=y)
