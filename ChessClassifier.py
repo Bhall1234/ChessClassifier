@@ -125,15 +125,17 @@ elif exec_mode == 'test':
         img_array = tf.expand_dims(img_array, 0)
         predictions = model.predict(img_array)
         scores = tf.nn.softmax(predictions[0]) # Softmax activation function
-        #store_probability.append(scores) # store probability for use in confusion matrix
+        store_probability.append(str(np.max(scores))) # store probability for use in confusion matrix
         predicted_class = class_names[np.argmax(scores)]
+        store_labels.append(predicted_class)
         print(str(chess_path)+" class="+predicted_class+" prob.="+str(np.max(scores)))
     print("---")
 
   #y = [1, 2, 4]
   #y_ = [2, 2, 4]
 
-  confusion = tf.math.confusion_matrix(labels=store_labels, predictions=scores)
+  print(store_probability)
+  confusion = tf.math.confusion_matrix(labels=store_labels, predictions=store_probability)
 
   #confusion = tf.math.confusion_matrix(labels=y_, predictions=y)
 
@@ -147,10 +149,10 @@ elif exec_mode == 'test':
   ax.xaxis.set_ticklabels(["Bishop","King","Knight","Pawn","Queen","Rook"])
   ax.yaxis.set_ticklabels(["Bishop","King","Knight","Pawn","Queen","Rook"])
 
-    # Display the visualization of the Confusion Matrix.
+  # Display the visualization of the Confusion Matrix.
   plt.show()
 
-    #print(confusion)
+  #print(confusion)
   #confusion = tf.math.confusion_matrix(labels=store_labels, predictions=scores)
   #sess = tf.Session()
   #print(confusion.eval(session=sess))
